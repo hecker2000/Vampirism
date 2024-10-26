@@ -39,8 +39,12 @@ public class AttackMeleeNoSunGoal extends MeleeAttackGoal {
             if (avoidSun) {
 
                 Path path = this.path;
+
                 //noinspection ConstantValue
-                if (path != null && mob.getCommandSenderWorld().canSeeSkyFromBelowWater(new BlockPos(Mth.floor(this.mob.getX()), (int) (this.mob.getBoundingBox().minY + 0.5D), Mth.floor(this.mob.getZ())))) {
+                if (path == null) {
+                    return false;
+                }
+                if (mob.getCommandSenderWorld().canSeeSkyFromBelowWater(new BlockPos(Mth.floor(this.mob.getX()), (int) (this.mob.getBoundingBox().minY + 0.5D), Mth.floor(this.mob.getZ())))) {
                     return false;
                 }
 

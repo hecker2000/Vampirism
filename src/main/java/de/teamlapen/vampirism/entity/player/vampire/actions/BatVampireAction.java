@@ -85,6 +85,7 @@ public class BatVampireAction extends DefaultVampireAction implements ILastingAc
     public void onActivatedClient(@NotNull IVampirePlayer vampire) {
         if (!((VampirePlayer) vampire).getSpecialAttributes().bat) {
             updatePlayer((VampirePlayer) vampire, true);
+            setModifier(vampire.asEntity(), true);
         }
     }
 

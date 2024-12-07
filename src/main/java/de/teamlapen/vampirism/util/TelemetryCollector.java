@@ -2,6 +2,7 @@ package de.teamlapen.vampirism.util;
 
 import de.teamlapen.vampirism.REFERENCE;
 import de.teamlapen.vampirism.config.VampirismConfig;
+import net.minecraft.Util;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModList;
@@ -18,6 +19,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +37,7 @@ public class TelemetryCollector {
 
     private static void send() {
         try {
+            HttpClient build = HttpClient.newBuilder().executor(Util.ioPool()).connectTimeout(Duration.ofSeconds(5)).build();
             StringBuilder builder = new StringBuilder();
             builder.append(REFERENCE.SETTINGS_API);
             builder.append("/telemetry/basic");
@@ -48,8 +51,8 @@ public class TelemetryCollector {
             builder.append("?");
             builder.append(params.entrySet().stream().map(s -> s.getKey() + "=" + URLEncoder.encode(s.getValue(), StandardCharsets.UTF_8)).collect(Collectors.joining("&")));
 
-            HttpClient.newHttpClient().send(HttpRequest.newBuilder().uri(new URI(builder.toString())).build(), HttpResponse.BodyHandlers.ofString());
-        } catch (URISyntaxException | IOException | InterruptedException e) {
+            build.sendAsync(HttpRequest.newBuilder().uri(new URI(builder.toString())).build(), HttpResponse.BodyHandlers.ofString());
+        } catch (URISyntaxException e) {
             LOGGER.error("Failed to send telemetry data", e);
         }
     }

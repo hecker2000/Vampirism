@@ -33,7 +33,7 @@ public class VampireNightVisionEffectInstance extends MobEffectInstance implemen
     @NotNull
     @Override
     public String getDescriptionId() {
-        return "effect.vampirism.nightVision";
+        return "effect.vampirism.night_vision";
     }
 
    /* @Override //TODO 1.19 readd

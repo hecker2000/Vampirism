@@ -3,6 +3,8 @@ package de.teamlapen.vampirism.util;
 import de.teamlapen.vampirism.REFERENCE;
 import de.teamlapen.vampirism.config.VampirismConfig;
 import net.minecraft.DetectedVersion;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.util.thread.EffectiveSide;
@@ -33,13 +35,13 @@ public class TelemetryCollector {
     }
 
     private static void send() {
-        try(var http =HttpClient.newHttpClient()) {
+        try(var http = HttpClient.newBuilder().executor(Util.nonCriticalIoPool()).build()) {
             StringBuilder builder = new StringBuilder();
             builder.append(REFERENCE.SETTINGS_API);
             builder.append("/telemetry/basic");
 
             Map<String, String> params = new HashMap<>();
-            params.put("mod_version", REFERENCE.VERSION.toString());
+            params.put("mod_version", "0.0.0");
             params.put("mc_version", DetectedVersion.BUILT_IN.getName());
             params.put("mod_count", Integer.toString(ModList.get().size()));
             params.put("side", (EffectiveSide.get() == LogicalSide.CLIENT ? "client" : "server"));

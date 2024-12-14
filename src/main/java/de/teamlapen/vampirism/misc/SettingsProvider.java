@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class SettingsProvider implements ISettingsProvider {
 
     public SettingsProvider(String baseUrl) {
         this.baseUrl = baseUrl;
-        this.client = HttpClient.newHttpClient();
+        this.client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).executor(Util.nonCriticalIoPool()).build();
     }
 
     @Override
@@ -97,7 +98,7 @@ public class SettingsProvider implements ISettingsProvider {
         if (error != null) {
             LOGGER.error("Failed to retrieve settings from server", error);
         }
-        if (VampirismMod.inDev || settings != null) {
+        if (VampirismMod.inDev || settings == null) {
             InputStream inputStream = VampirismMod.class.getResourceAsStream("/default_remote_config.json");
             if (inputStream != null) {
                 try {
@@ -114,7 +115,7 @@ public class SettingsProvider implements ISettingsProvider {
         if (error != null) {
             LOGGER.error("Failed to retrieve supporter from server", error);
         }
-        if (VampirismMod.inDev || file != null) {
+        if (VampirismMod.inDev || file == null) {
                 InputStream inputStream = VampirismMod.class.getResourceAsStream("/supporters.json");
                 if (inputStream != null) {
                     try {

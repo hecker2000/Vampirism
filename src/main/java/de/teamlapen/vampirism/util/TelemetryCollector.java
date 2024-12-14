@@ -43,7 +43,7 @@ public class TelemetryCollector {
             builder.append("/telemetry/basic");
 
             Map<String, String> params = new HashMap<>();
-            params.put("mod_version", "0.0.0");
+            params.put("mod_version", REFERENCE.VERSION.toString());
             params.put("mc_version", DetectedVersion.BUILT_IN.getName());
             params.put("mod_count", Integer.toString(ModList.get().size()));
             params.put("side", (FMLEnvironment.dist == Dist.CLIENT ? "client" : "server"));

@@ -9,6 +9,7 @@ import de.teamlapen.lib.lib.util.ResourceLocationTypeAdapter;
 import de.teamlapen.vampirism.VampirismMod;
 import de.teamlapen.vampirism.api.settings.ISettingsProvider;
 import de.teamlapen.vampirism.api.settings.Supporter;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +39,7 @@ public class SettingsProvider implements ISettingsProvider {
 
     public SettingsProvider(String baseUrl) {
         this.baseUrl = baseUrl;
-        this.client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).executor(Util.nonCriticalIoPool()).build();
+        this.client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).executor(Util.ioPool()).build();
     }
 
     @Override
